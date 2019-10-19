@@ -1,0 +1,16 @@
+{
+  "description": "UTM Cleaner",
+  "manifest_version": 2,
+  "name": "utm-cleaner",
+  "version": "1.0",
+
+  "permissions": [
+    "webRequest",
+    "webRequestBlocking",
+    "<all_urls>"
+  ],
+
+  "background": {
+    "scripts": ["./src/cleaner.js"]
+  }
+}
