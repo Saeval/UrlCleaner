@@ -1,7 +1,7 @@
 {
-  "description": "UTM Cleaner",
+  "description": "URL Cleaner",
   "manifest_version": 2,
-  "name": "utm-cleaner",
+  "name": "url-cleaner",
   "version": "1.0",
 
   "permissions": [

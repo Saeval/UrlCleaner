@@ -19,14 +19,7 @@ function cleanedUrl(url) {
     let values = [];
     let cleanedParameters = "?";
 
-    for(let i = 0; i < countParameters(parametersAndValues); i++){
-        let parameterAndValue = parametersAndValues.split("&")[i];
-        let parameter = parameterAndValue.split('=')[0];
-        let value = parameterAndValue.split('=')[1];
-
-        parameters.push(parameter);
-        values.push(value);
-    }
+    parseAndFillParametersAndValues(parametersAndValues, parameters, values);
 
     for(let i = 0; i < parameters.length; i++){
         let parameter = parameters[i];
@@ -35,6 +28,17 @@ function cleanedUrl(url) {
     }
 
     return `${baseUrl}${trimLastCharacter(cleanedParameters)}`;
+}
+
+function parseAndFillParametersAndValues(parametersAndValues, parameters, values) {
+    for (let i = 0; i < countParameters(parametersAndValues); i++) {
+        let parameterAndValue = parametersAndValues.split('&')[i];
+        let parameter = parameterAndValue.split('=')[0];
+        let value = parameterAndValue.split('=')[1];
+
+        parameters.push(parameter);
+        values.push(value);
+    }
 }
 
 function urlContainsAtLeastOneBlacklistedParameter(url){

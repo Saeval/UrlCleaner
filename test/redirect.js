@@ -1,4 +1,10 @@
-const utmParameters = ['utm_source', 'utm_medium', 'utm_campaign', 'utm_term', 'utm_content'];
+const utmParameters = [
+    'utm_source',
+    'utm_medium',
+    'utm_campaign',
+    'utm_term',
+    'utm_content'
+];
 
 function redirect(requestDetails) {
     return urlContainsAtLeastOneBlacklistedParameter(requestDetails.url) ?
@@ -13,14 +19,7 @@ function cleanedUrl(url) {
     let values = [];
     let cleanedParameters = "?";
 
-    for(let i = 0; i < countParameters(parametersAndValues); i++){
-        let parameterWithValue = parametersAndValues.split("&")[i];
-        let parameter = parameterWithValue.split('=')[0];
-        let value = parameterWithValue.split('=')[1];
-
-        parameters.push(parameter);
-        values.push(value);
-    }
+    parseAndFillParametersAndValues(parametersAndValues, parameters, values);
 
     for(let i = 0; i < parameters.length; i++){
         let parameter = parameters[i];
@@ -33,6 +32,17 @@ function cleanedUrl(url) {
 
 function urlContainsAtLeastOneBlacklistedParameter(url){
     return utmParameters.some(p => url.toLowerCase().indexOf(p) !== -1)
+}
+
+function parseAndFillParametersAndValues(parametersAndValues, parameters, values) {
+    for (let i = 0; i < countParameters(parametersAndValues); i++) {
+        let parameterAndValue = parametersAndValues.split("&")[i];
+        let parameter = parameterAndValue.split('=')[0];
+        let value = parameterAndValue.split('=')[1];
+
+        parameters.push(parameter);
+        values.push(value);
+    }
 }
 
 function countParameters(url) {

@@ -31,3 +31,8 @@ test('three parameters', () => {
     expect(redirect(fakeRequest)).toBe('https://www.dominioacaso.it');
 });
 
+test('parameters with special characters', () => {
+    let fakeRequest = { url: 'https://www.dominioacaso.it?parameter1=#weird1&utm_source=reddit&parameter2=searched+term&parameter3=searched%20for%20something' };
+    expect(redirect(fakeRequest)).toBe('https://www.dominioacaso.it?parameter1=#weird1&parameter2=searched+term&parameter3=searched%20for%20something');
+});
+
