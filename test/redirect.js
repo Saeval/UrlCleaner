@@ -1,3 +1,5 @@
+const amazonTrackingStartParameter = '/ref';
+
 const utmParameters = [
     'utm_source',
     'utm_medium',
@@ -7,9 +9,15 @@ const utmParameters = [
 ];
 
 function redirect(requestDetails) {
-    return urlContainsAtLeastOneBlacklistedParameter(requestDetails.url) ?
-        cleanedUrl(requestDetails.url) :
-        requestDetails.url;
+    const requestUrl = requestDetails.url;
+
+    if (urlContainsAtLeastOneBlacklistedParameter(requestUrl))
+        return { redirectUrl: cleanedUrl(requestUrl) };
+
+    if (isAmazonSuperUrl(requestUrl))
+        return {redirectUrl: cleanFromAmazonTrackers(requestUrl) };
+
+    return requestUrl;
 }
 
 function cleanedUrl(url) {
@@ -31,7 +39,11 @@ function cleanedUrl(url) {
 }
 
 function urlContainsAtLeastOneBlacklistedParameter(url){
-    return utmParameters.some(p => url.toLowerCase().indexOf(p) !== -1)
+    return utmParameters.some(p => url.toLowerCase().includes(p))
+}
+
+function isAmazonSuperUrl(url) {
+    return url.includes('.amazon.') && url.includes(amazonTrackingStartParameter);
 }
 
 function parseAndFillParametersAndValues(parametersAndValues, parameters, values) {
@@ -55,6 +67,10 @@ function parameterIsAllowed(parameter) {
 
 function trimLastCharacter(value) {
     return value.substring(0, value.length - 1)
+}
+
+function cleanFromAmazonTrackers(url) {
+    return url.substring(0, url.indexOf(amazonTrackingStartParameter));
 }
 
 module.exports = redirect;
