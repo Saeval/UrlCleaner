@@ -1,3 +1,5 @@
+let urlParser = require('./urlParser');
+
 const amazonTrackingStartParameter = '/ref';
 
 const utmParameters = [
@@ -21,21 +23,16 @@ function redirect(requestDetails) {
 }
 
 function cleanedUrl(url) {
-    let baseUrl = url.substring(0, url.indexOf('?'));
-    let parametersAndValues = url.substring(baseUrl.length + 1);
-    let parameters = [];
-    let values = [];
+    let parsedUrl = new urlParser().parse(url);
     let cleanedParameters = "?";
 
-    parseAndFillParametersAndValues(parametersAndValues, parameters, values);
-
-    for(let i = 0; i < parameters.length; i++){
-        let parameter = parameters[i];
+    for(let i = 0; i < parsedUrl.parameters.length; i++){
+        let parameter = parsedUrl.parameters[i];
         if (parameterIsAllowed(parameter))
-            cleanedParameters += `${parameter}=${values[i]}&`;
+            cleanedParameters += `${parameter}=${parsedUrl.values[i]}&`;
     }
 
-    return `${baseUrl}${trimLastCharacter(cleanedParameters)}`;
+    return `${parsedUrl.baseUrl}${trimLastCharacter(cleanedParameters)}`;
 }
 
 function urlContainsAtLeastOneBlacklistedParameter(url){
@@ -43,22 +40,9 @@ function urlContainsAtLeastOneBlacklistedParameter(url){
 }
 
 function isAmazonSuperUrl(url) {
-    return url.includes('.amazon.') && url.includes(amazonTrackingStartParameter);
-}
-
-function parseAndFillParametersAndValues(parametersAndValues, parameters, values) {
-    for (let i = 0; i < countParameters(parametersAndValues); i++) {
-        let parameterAndValue = parametersAndValues.split("&")[i];
-        let parameter = parameterAndValue.split('=')[0];
-        let value = parameterAndValue.split('=')[1];
-
-        parameters.push(parameter);
-        values.push(value);
-    }
-}
-
-function countParameters(url) {
-    return (url.match(/&/g) || []).length + 1;
+    return url.includes('.amazon.') &&
+           url.includes('/dp/') &&
+           url.includes(amazonTrackingStartParameter);
 }
 
 function parameterIsAllowed(parameter) {

@@ -11,6 +11,6 @@
   ],
 
   "background": {
-    "scripts": ["./src/cleaner.js"]
+    "scripts": ["./src/cleaner.js", "./src/urlParser.js"]
   }
 }
