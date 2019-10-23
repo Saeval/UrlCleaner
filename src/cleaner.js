@@ -1,4 +1,5 @@
 const amazonTrackingStartParameter = '/ref';
+const amazonProductPageIdentifier = '/dp';
 
 const utmParameters = [
     'utm_source',
@@ -46,7 +47,9 @@ function trimLastCharacter(value) {
 }
 
 function isAnAmazonSuperUrl(url) {
-    return url.includes('.amazon.') && url.includes(amazonTrackingStartParameter);
+    return url.includes('.amazon.') &&
+           url.includes(amazonProductPageIdentifier) &&
+           url.includes(amazonTrackingStartParameter);
 }
 
 function cleanFromAmazonTrackers(url) {

@@ -1,6 +1,7 @@
 let urlParser = require('./urlParser');
 
 const amazonTrackingStartParameter = '/ref';
+const amazonProductPageIdentifier = '/dp';
 
 const utmParameters = [
     'utm_source',
@@ -41,7 +42,7 @@ function urlContainsAtLeastOneBlacklistedParameter(url){
 
 function isAmazonSuperUrl(url) {
     return url.includes('.amazon.') &&
-           url.includes('/dp/') &&
+           url.includes(amazonProductPageIdentifier) &&
            url.includes(amazonTrackingStartParameter);
 }
 
