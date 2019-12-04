@@ -6,7 +6,11 @@ const utmParameters = [
     'utm_medium',
     'utm_campaign',
     'utm_term',
-    'utm_content'
+    'utm_content',
+    'utm_brand',
+    'utm_social-type',
+    'fbclid',
+    'gclid'
 ];
 
 function redirect(requestDetails) {
@@ -48,8 +52,11 @@ function trimLastCharacter(value) {
 
 function isAnAmazonSuperUrl(url) {
     return url.includes('.amazon.') &&
-           url.includes(amazonProductPageIdentifier) &&
-           url.includes(amazonTrackingStartParameter);
+           url.includes(amazonTrackingStartParameter) &&
+        (
+           url.includes(amazonProductPageIdentifier) ||
+           url.includes('/gp/')
+        );
 }
 
 function cleanFromAmazonTrackers(url) {
